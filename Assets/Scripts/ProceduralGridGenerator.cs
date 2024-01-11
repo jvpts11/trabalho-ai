@@ -16,7 +16,6 @@ public class ProceduralGridGenerator : MonoBehaviour
 
     void GenerateGrid()
     {
-        // Crie um array 2D para armazenar os objetos do grid
         GameObject[,] gridObjects = new GameObject[gridSizeX, gridSizeY];
 
         for (int x = 0; x < gridSizeX; x++)
@@ -25,7 +24,6 @@ public class ProceduralGridGenerator : MonoBehaviour
             {
                 Vector3 spawnPosition = new Vector3(x, y, 0);
 
-                // Adicione bordas com quadrados pretos
                 if (x == 0 || x == gridSizeX - 1 || y == 0 || y == gridSizeY - 1)
                 {
                     GameObject obstacle = CreateObstacle(spawnPosition);
@@ -49,11 +47,9 @@ public class ProceduralGridGenerator : MonoBehaviour
             }
         }
 
-        // Adicione o quadrado verde (posição inicial da IA)
         Vector2Int greenSquarePosition = GetRandomWalkableSpace(gridObjects);
         GameObject greenSquare = CreateGreenSquare(new Vector3(greenSquarePosition.x, greenSquarePosition.y, 0));
 
-        // Adicione o quadrado amarelo (objetivo da IA)
         Vector2Int yellowSquarePosition = GetAdjacentWhiteWalkableSpace(gridObjects);
         GameObject yellowSquare = CreateYellowSquare(new Vector3(yellowSquarePosition.x, yellowSquarePosition.y, 0));
     }
@@ -96,7 +92,6 @@ public class ProceduralGridGenerator : MonoBehaviour
 
         yellowSquare.gameObject.name = "YellowSquare";
 
-        // Crie um novo material para garantir que a cor seja aplicada corretamente
         Material yellowMaterial = new Material(Shader.Find("Standard"));
         yellowMaterial.color = Color.yellow;
 
@@ -109,9 +104,9 @@ public class ProceduralGridGenerator : MonoBehaviour
 
     Vector2Int GetRandomWalkableSpace(GameObject[,] gridObjects)
     {
-        int maxAttempts = gridSizeX * gridSizeY; // Evitar um loop infinito
+        int maxAttempts = gridSizeX * gridSizeY;
         int attempts = 0;
-        float minDistance = 2.0f; // Distância mínima entre quadrados verde e amarelo
+        float minDistance = 2.0f;
 
         while (attempts < maxAttempts)
         {
@@ -136,9 +131,9 @@ public class ProceduralGridGenerator : MonoBehaviour
 
     Vector2Int GetAdjacentWhiteWalkableSpace(GameObject[,] gridObjects)
     {
-        int maxAttempts = gridSizeX * gridSizeY; // Evitar um loop infinito
+        int maxAttempts = gridSizeX * gridSizeY;
         int attempts = 0;
-        float minDistance = 2.0f; // Distância mínima entre quadrados verde e amarelo
+        float minDistance = 2.0f;
 
         while (attempts < maxAttempts)
         {
@@ -171,7 +166,6 @@ public class ProceduralGridGenerator : MonoBehaviour
 
     bool HasAdjacentWhiteWalkableSpace(GameObject[,] gridObjects, Vector2Int position)
     {
-        // Verifique se há um quadrado branco adjacente
         return gridObjects[position.x - 1, position.y].GetComponent<Renderer>().material.color == Color.white ||
                gridObjects[position.x + 1, position.y].GetComponent<Renderer>().material.color == Color.white ||
                gridObjects[position.x, position.y - 1].GetComponent<Renderer>().material.color == Color.white ||

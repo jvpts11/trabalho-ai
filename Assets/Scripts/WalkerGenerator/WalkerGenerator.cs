@@ -28,6 +28,8 @@ public class WalkerGenerator : MonoBehaviour
     public Tile greenSquare;
     public Tile yellowSquare;
 
+    public Tile blueCircle;
+
     public int maximumWalkers = 10;
 
     public int tileCount = default;
@@ -40,8 +42,9 @@ public class WalkerGenerator : MonoBehaviour
 
     public int mapHeight = 30;
 
-    private Vector2Int greenSquarePosition;
-    private Vector2Int yellowSquarePosition;
+    public Vector2Int greenSquarePosition;
+    public Vector2Int yellowSquarePosition;
+    public Vector2Int blueCirclePosition;
 
     private float chanceToSpawnGreenSquare = 0.1f;
     private float chanceToSpawnYellowSquare = 0.1f;
@@ -49,18 +52,13 @@ public class WalkerGenerator : MonoBehaviour
     private bool isGreenSquareSpawned = false;
     private bool isYellowSquareSpawned = false;
 
+    public bool mapHasBeenGenerated = false;
 
-
+    public AStarPathFindingOne aStarPathfindingScript;
 
     void Start()
     {
         InitializeGrid();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     void InitializeGrid()
@@ -216,7 +214,6 @@ public class WalkerGenerator : MonoBehaviour
                         gridHandler[i, j] = Grid.GREENSQUARE;
                         greenSquarePosition = randomPos;
                         isGreenSquareSpawned = true;
-                        Debug.Log(isGreenSquareSpawned);
                     }
                 }
             }
@@ -238,7 +235,6 @@ public class WalkerGenerator : MonoBehaviour
                         tileMap.SetTile(new Vector3Int(randomPos.x, randomPos.y, 0), yellowSquare);
                         yellowSquarePosition = randomPos;
                         isYellowSquareSpawned = true;
-                        Debug.Log(isGreenSquareSpawned);
                     }
                 }
             }
@@ -313,5 +309,35 @@ public class WalkerGenerator : MonoBehaviour
                 }
             }
         }
+        mapHasBeenGenerated = true;
+        Debug.Log(mapHasBeenGenerated);
+        StartAStarPathfinding();
     }
+
+    void StartAStarPathfinding()
+    {
+        aStarPathfindingScript.InitializeNodes();
+        aStarPathfindingScript.FindPath();
+        aStarPathfindingScript.MoveBlueCircle(aStarPathfindingScript.path);
+    }
+
+    public PathNode.NodeType ConvertGridToNodeType(Grid gridType)
+    {
+        switch (gridType)
+        {
+            case Grid.EMPTY:
+                return PathNode.NodeType.Empty;
+            case Grid.WALL:
+                return PathNode.NodeType.Wall;
+            case Grid.FLOOR:
+                return PathNode.NodeType.Floor;
+            case Grid.GREENSQUARE:
+                return PathNode.NodeType.GreenSquare;
+            case Grid.YELLOWSQUARE:
+                return PathNode.NodeType.YellowSquare;
+            default:
+                return PathNode.NodeType.Empty;
+        }
+    }
+
 }

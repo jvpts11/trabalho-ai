@@ -1,23 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class PathNode
 {
-    private Grid[,] grid;
+    public enum NodeType
+    {
+        Empty,
+        Wall,
+        Floor,
+        GreenSquare,
+        YellowSquare,
+    }
 
-    private int x;
-    private int y;
+    public NodeType nodeType;
 
-    private int gCost;
-    private int hCost;
-    private int fCost;
+    public int x;
+    public int y;
+
+    public int gCost;
+    public int hCost;
+    public int fCost;
 
     public PathNode nodeBefore;
 
-    public PathNode(Grid[,] grid, int x, int y, int gCost, int hCost, int fCost)
+    public PathNode(NodeType nodeType, int x, int y, int gCost, int hCost, int fCost)
     {
-        this.grid = grid;
+        this.nodeType = nodeType;
         this.x = x;
         this.y = y;
         this.gCost = gCost;
@@ -27,6 +32,11 @@ public class PathNode
 
     public override string ToString()
     {
-        return x + ","+ y;
+        return x + "," + y;
+    }
+
+    public NodeType GetNodeType()
+    {
+        return nodeType;
     }
 }
