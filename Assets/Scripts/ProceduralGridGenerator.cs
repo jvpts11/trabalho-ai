@@ -61,6 +61,7 @@ public class ProceduralGridGenerator : MonoBehaviour
     GameObject CreateObstacle(Vector3 position)
     {
         GameObject obstacle = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        obstacle.gameObject.name = "Wall";
         obstacle.transform.position = position;
         obstacle.GetComponent<Renderer>().material.color = Color.black;
         obstacle.transform.parent = transform;
@@ -71,6 +72,7 @@ public class ProceduralGridGenerator : MonoBehaviour
     {
         GameObject walkableSpace = GameObject.CreatePrimitive(PrimitiveType.Cube);
         walkableSpace.transform.position = position;
+        walkableSpace.gameObject.name = "Floor";
         Renderer renderer = walkableSpace.GetComponent<Renderer>();
         renderer.material = new Material(Shader.Find("Standard"));
         renderer.material.color = Color.white;
@@ -81,6 +83,7 @@ public class ProceduralGridGenerator : MonoBehaviour
     GameObject CreateGreenSquare(Vector3 position)
     {
         GameObject greenSquare = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        greenSquare.gameObject.name =  "GreenSquare";
         greenSquare.transform.position = position;
         greenSquare.GetComponent<Renderer>().material.color = Color.green;
         return greenSquare;
@@ -90,6 +93,8 @@ public class ProceduralGridGenerator : MonoBehaviour
     {
         GameObject yellowSquare = GameObject.CreatePrimitive(PrimitiveType.Cube);
         yellowSquare.transform.position = position;
+
+        yellowSquare.gameObject.name = "YellowSquare";
 
         // Crie um novo material para garantir que a cor seja aplicada corretamente
         Material yellowMaterial = new Material(Shader.Find("Standard"));
@@ -119,7 +124,6 @@ public class ProceduralGridGenerator : MonoBehaviour
             {
                 RemoveSquare(gridObjects, randomPosition);
                 lastGreenSquarePosition = randomPosition;
-                CreateGreenSquare(new Vector3(randomPosition.x, randomPosition.y, 0));
                 return randomPosition;
             }
 
@@ -147,7 +151,6 @@ public class ProceduralGridGenerator : MonoBehaviour
             {
                 RemoveSquare(gridObjects, adjacentPosition);
                 lastYellowSquarePosition = adjacentPosition;
-                CreateYellowSquare(new Vector3(adjacentPosition.x, adjacentPosition.y, 0));
                 return adjacentPosition;
             }
 
